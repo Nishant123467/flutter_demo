@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "717713395118",
+    "project_id": "todolist-ababa",
+    "storage_bucket": "todolist-ababa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717713395118:android:146b98821d5e0f5e3f0c3f",
+        "android_client_info": {
+          "package_name": "com.example.todolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717713395118-vovdfc5j7vg921gb42sneuml6k60c5ta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdypQ8EcQS9YjZ_arC2eVzZDA7Pz7rU30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717713395118-vovdfc5j7vg921gb42sneuml6k60c5ta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
