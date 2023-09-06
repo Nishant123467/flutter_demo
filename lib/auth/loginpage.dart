@@ -76,11 +76,16 @@ class _LoginState extends State<Login> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
           child: ListView(
             children: [
+              SizedBox(height: 1,),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: Image.asset('assets/images/todo.jpg'),
+              ),
+              SizedBox(height:0.8),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 1.0),
                 child: TextFormField(
                   autofocus: false,
                   decoration: InputDecoration(
