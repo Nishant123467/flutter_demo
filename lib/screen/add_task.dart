@@ -30,6 +30,7 @@ class _AddTaskState extends State<AddTask> {
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _recognizedText = '';
+  double containerWidth = 200.0;
   
   
   
@@ -106,85 +107,103 @@ class _AddTaskState extends State<AddTask> {
           ],
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: ListView(
-            children: [
-            
-              Container(
-                 margin: EdgeInsets.symmetric(vertical: 10.0),
-                 child: TextFormField(
-                   autofocus: false,
-                   decoration: InputDecoration(
-                     contentPadding: EdgeInsets.all(16.0),
-                     labelText: 'Title: ',
-                     labelStyle: TextStyle(fontSize: 20.0),
-                     border: OutlineInputBorder(),
-                     errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-                   ),
-                   controller: titleController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Title';
-                     }
-                     return null;
-                   },
-                 ),
-               ),
+      body: Container(
+         decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/todo.jpg"),
+         fit: BoxFit.scaleDown,),),
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+            child: ListView(
+              children: [
               
-              
-              Container(
-               margin: EdgeInsets.symmetric(vertical: 10.0),
-               child: TextFormField(
-                  autofocus: false,
-                   decoration: InputDecoration(
-                     labelText: 'Description: ',
-                    labelStyle: TextStyle(fontSize: 20.0),
-                    border: OutlineInputBorder(),
-                 errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
-                   ),
-                   controller: descriptionController,
-                   validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please Enter Description';
-                     }
-                    return null;
-                   },
-                  ),
-                ),
-
-             
-            
-               Container(
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                   children: [
-                     ElevatedButton(
-                      onPressed: () {
-                         if (_formKey.currentState!.validate()) {
-                           addTaskToFirestore();
-                           clearText();
-                         }
-                       },
-                       child: Text(
-                        'Add Task',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
+                Container(
+                width: containerWidth,
+                   margin: EdgeInsets.symmetric(vertical: 10.0),
+                   child: TextFormField(
+                     autofocus: false,
+                     decoration: const InputDecoration(
+                       contentPadding: EdgeInsets.all(16.0),
+                       labelText: 'Enter Title with minimum words: ',
+                       
+                       labelStyle: TextStyle(fontSize: 20.0),
+                       border: OutlineInputBorder(),
+                       errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
                      ),
-                    ElevatedButton(
-                      onPressed: clearText,
-                       child: Text(
-                         'Reset',
-                         style: TextStyle(fontSize: 18.0),
-                       ),
-                      style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
-                    ),
-                   ],
+                     onChanged: (value) {
+                                   // Calculate the width based on the text length
+                                   final textLength = value.length;
+                                   final minWidth = 100.0; // Minimum width
+                                   final maxWidth = 600.0; // Maximum width
+                   
+                                   // Set the width within the given range
+                                   setState(() {
+                    containerWidth =
+                        (textLength * 10.0).clamp(minWidth, maxWidth);
+                                   });
+                                 },
+                     controller: titleController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Title';
+                       }
+                       return null;
+                     },
+                   ),
                  ),
-               ),
-             ],
+                
+                
+                // Container(
+                //  margin: EdgeInsets.symmetric(vertical: 10.0),
+                //  child: TextFormField(
+                //     autofocus: false,
+                //      decoration: InputDecoration(
+                //        labelText: 'Description: ',
+                //       labelStyle: TextStyle(fontSize: 20.0),
+                //       border: OutlineInputBorder(),
+                //    errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+                //      ),
+                //      controller: descriptionController,
+                //      validator: (value) {
+                //         if (value == null || value.isEmpty) {
+                //           return 'Please Enter Description';
+                //        }
+                //       return null;
+                //      },
+                //     ),
+                //   ),
+      
+               
+              
+                 Container(
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                     children: [
+                       ElevatedButton(
+                        onPressed: () {
+                           if (_formKey.currentState!.validate()) {
+                             addTaskToFirestore();
+                             clearText();
+                           }
+                         },
+                         child: Text(
+                          'Add Task',
+                          style: TextStyle(fontSize: 18.0),
+                        ),
+                       ),
+                      ElevatedButton(
+                        onPressed: clearText,
+                         child: Text(
+                           'Reset',
+                           style: TextStyle(fontSize: 18.0),
+                         ),
+                        style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                      ),
+                     ],
+                   ),
+                 ),
+               ],
+            ),
           ),
         ),
       ),

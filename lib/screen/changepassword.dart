@@ -48,49 +48,53 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: ListView(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              child: TextFormField(
-                autofocus: false,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'New Password: ',
-                  hintText: 'Enter New Password',
-                  labelStyle: TextStyle(fontSize: 20.0),
-                  border: OutlineInputBorder(),
-                  errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+    return Container(
+       decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/simple.png"),
+         fit: BoxFit.cover,),),
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: ListView(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: TextFormField(
+                  autofocus: false,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'New Password: ',
+                    hintText: 'Enter New Password',
+                    labelStyle: TextStyle(fontSize: 20.0),
+                    border: OutlineInputBorder(),
+                    errorStyle: TextStyle(color: Colors.redAccent, fontSize: 15),
+                  ),
+                  controller: newPasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Password';
+                    }
+                    return null;
+                  },
                 ),
-                controller: newPasswordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please Enter Password';
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Validate returns true if the form is valid, otherwise false.
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      newPassword = newPasswordController.text;
+                    });
+                    changePassword();
                   }
-                  return null;
                 },
+                child: Text(
+                  'Change Password',
+                  style: TextStyle(fontSize: 18.0),
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                if (_formKey.currentState!.validate()) {
-                  setState(() {
-                    newPassword = newPasswordController.text;
-                  });
-                  changePassword();
-                }
-              },
-              child: Text(
-                'Change Password',
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

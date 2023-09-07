@@ -185,6 +185,7 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
     body: 
      StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('users').doc(uid).collection('tasks').snapshots(),
+      
       builder: (BuildContext context,AsyncSnapshot<QuerySnapshot>snapshot){
         if (snapshot.hasError) {
           print("something went wrong");
@@ -207,6 +208,8 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
 
 
         return Container(
+           decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/simple.png"),
+         fit: BoxFit.cover,),),
           
       margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
       child: ListView.builder(
@@ -222,6 +225,8 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
         bool isCompleted = taskData['isCompleted'] ?? false;
         final taskDoc = storedocs[index];
         final taskId = taskDoc.id;
+       
+
 
         return Container(
         
@@ -231,7 +236,7 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
             
             decoration: BoxDecoration(color:Color(0xff121211),
             borderRadius:BorderRadius.circular(10)), 
-            height: 90,
+            height: 150,
             child: Row(
                
               mainAxisAlignment: MainAxisAlignment.start,
@@ -243,33 +248,33 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
                  color: Colors.green,
                  padding: EdgeInsets.all(0.0), 
                  child: Checkbox(
-  value: storedocs[index]['isCompleted'] ?? false,
-  onChanged: (bool? newValue) async {
-    if (newValue != null) {
-      final userId = FirebaseAuth.instance.currentUser!.uid;
-      final taskDocId = storedocs[index].id;
-
-      // Update 'isCompleted' in Firestore
-      await FirebaseFirestore.instance
+                value: storedocs[index]['isCompleted'] ?? false,
+                onChanged: (bool? newValue) async {
+          if (newValue != null) {
+            final userId = FirebaseAuth.instance.currentUser!.uid;
+            final taskDocId = storedocs[index].id;
+                
+            // Update 'isCompleted' in Firestore
+            await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('tasks')
           .doc(taskDocId)
           .update({'isCompleted': newValue});
-
-      setState(() {
-       isCompleted = newValue;
-      });
-
-      // Call the countCompletedTasks function to get updated counts
-      // final counts = await countCompletedTasks(userId);
-      // print('Checked tasks: ${counts['checkedCount']}');
-      // print('Unchecked tasks: ${counts['uncheckedCount']}');
-    }
-  },
-  activeColor: Colors.blue,
-),
-
+                
+            setState(() {
+             isCompleted = newValue;
+            });
+                
+            // Call the countCompletedTasks function to get updated counts
+            // final counts = await countCompletedTasks(userId);
+            // print('Checked tasks: ${counts['checkedCount']}');
+            // print('Unchecked tasks: ${counts['uncheckedCount']}');
+          }
+                },
+                activeColor: Colors.blue,
+                ),
+                
                 ),
                 Column(
                    mainAxisAlignment: MainAxisAlignment.center,
@@ -278,18 +283,22 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
                     SizedBox(
                                    width: 10,
                                 ),
-                    Container( margin: EdgeInsets.only(left: 20),
-                    child: Wrap(
-                      children: [
-                        //  Container(child: print(taskData['title']),),
-                        Text(
-                   //   _voiceRecognitionData,
-                              taskData['title'] , // Use 'title' from your document
-                              style: TextStyle(color: Colors.white),
-                            ),
-                      ],
-                    ),
-                    //child: Text("this is title row",style: TextStyle(color: Colors.white),),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container( margin: EdgeInsets.only(left: 20),
+                      child: Wrap(
+                        children: [
+                          //  Container(child: print(taskData['title']),),
+                          Text(
+                                           //   _voiceRecognitionData,
+                                taskData['title'] ,
+                                overflow: TextOverflow.ellipsis, // Use 'title' from your document
+                                style: TextStyle(color: Colors.white),
+                              ),
+                        ],
+                      ),
+                      //child: Text("this is title row",style: TextStyle(color: Colors.white),),
+                      ),
                     ),
                      SizedBox(
                                    height: 10,
@@ -304,36 +313,35 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
                                                               ),
                                     ),
                                   // child: Text("this is time row",style: TextStyle(color: Colors.white),)
-
-                                )
-
-                   ],
-
-                ),
-                SizedBox(width: 10,),
-
-               
-                 Container(
+                
+                                ),
+                                 SizedBox(
+                                   height: 0,
+                                ),
+                               
+            Row(
+              children: [
+                  Container(
                 //  margin: EdgeInsets.only(left: 10),
                 child: IconButton(onPressed: ()async{
                     final userId = FirebaseAuth.instance.currentUser!.uid;
                  final counts = await countCompletedTasks(userId);
-      print('Checked tasks: ${counts['checkedCount']}');
-     print('Unchecked tasks: ${counts['uncheckedCount']}');
+            print('Checked tasks: ${counts['checkedCount']}');
+           print('Unchecked tasks: ${counts['uncheckedCount']}');
                 //  deleteUser(docs['id']);
               deleteTask(taskId);
-
+                
                   }, icon: Icon(Icons.delete,color: Colors.red,))
             ),
-            Container(
-  child: IconButton(
-    onPressed: () {
-      // Show a time picker when the button is pressed
-      showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      ).then((pickedTime) {
-        if (pickedTime != null) {
+                 Container(
+                child: IconButton(
+          onPressed: () {
+            // Show a time picker when the button is pressed
+            showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+            ).then((pickedTime) {
+                if (pickedTime != null) {
           // Convert the TimeOfDay to a DateTime
           final now = DateTime.now();
           final notificationTime = DateTime(
@@ -343,31 +351,81 @@ Future<Map<String, int>> countCompletedTasks(String userId) async {
             pickedTime.hour,
             pickedTime.minute,
           );
-
+                
           // Schedule a notification
           _scheduleNotification(taskId, taskData['title'], notificationTime);
-        }
-      });
-    },
-    icon: Icon(Icons.alarm_add,color: Colors.green,),
-  ),
-),
-Container(
-  child: IconButton(onPressed: ()=>{
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>updatetask(id:taskId),),)
-  }, icon: Icon(Icons.edit,color: Colors.white,)),
-
-)
-
+                }
+            });
+          },
+          icon: Icon(Icons.alarm_add,color: Colors.green,),
+                ),
+                ),
+                Container(
+                child: IconButton(onPressed: ()=>{
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>updatetask(id:taskId),),)
+                }, icon: Icon(Icons.edit,color: Colors.white,)),
+                
+                )
+              ],
+            )
+                
+                   ],
+                
+                ),
+                SizedBox(width: 1,),
+                
+               
+          //              Container(
+          //             //  margin: EdgeInsets.only(left: 10),
+          //             child: IconButton(onPressed: ()async{
+          //                 final userId = FirebaseAuth.instance.currentUser!.uid;
+          //              final counts = await countCompletedTasks(userId);
+          //   print('Checked tasks: ${counts['checkedCount']}');
+          //  print('Unchecked tasks: ${counts['uncheckedCount']}');
+          //             //  deleteUser(docs['id']);
+          //           deleteTask(taskId);
+                
+          //               }, icon: Icon(Icons.delete,color: Colors.red,))
+          //         ),
+             SizedBox(width: 0,),
+                //             Container(
+                //   child: IconButton(
+                //     onPressed: () {
+                //       // Show a time picker when the button is pressed
+                //       showTimePicker(
+                //         context: context,
+                //         initialTime: TimeOfDay.now(),
+                //       ).then((pickedTime) {
+                //         if (pickedTime != null) {
+                //           // Convert the TimeOfDay to a DateTime
+                //           final now = DateTime.now();
+                //           final notificationTime = DateTime(
+                //             now.year,
+                //             now.month,
+                //             now.day,
+                //             pickedTime.hour,
+                //             pickedTime.minute,
+                //           );
+                
+                //           // Schedule a notification
+                //           _scheduleNotification(taskId, taskData['title'], notificationTime);
+                //         }
+                //       });
+                //     },
+                //     icon: Icon(Icons.alarm_add,color: Colors.green,),
+                //   ),
+                // ),
+                
+                
              
             
-
-
+                
+                
               ],
               
-
+                
             ),),
-
+        
           );
         }
 

@@ -53,90 +53,95 @@ String userId = FirebaseAuth.instance.currentUser!.uid;
         var title=data!['title'];
         return
       
-       Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-              child: ListView(
-                  children: [
-                    Container(
-                       margin: EdgeInsets.symmetric(vertical: 10.0),
-                       child: TextFormField(
-                         initialValue: title,
-                        autofocus: false,
-                        onChanged: (value) => title=value,
-                         decoration: InputDecoration(
-                          labelText: 'title:',
-                          labelStyle: TextStyle(fontSize: 20.0),
-                          border: OutlineInputBorder(),
-                          errorStyle:
-                              TextStyle(color: Colors.redAccent, fontSize: 15),
+       Container(
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/simple.png"),
+        fit: BoxFit.cover,),),
+         child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                child: ListView(
+                    children: [
+                      Container(
+                        
+                         margin: EdgeInsets.symmetric(vertical: 10.0),
+                         child: TextFormField(
+                           initialValue: title,
+                          autofocus: false,
+                          onChanged: (value) => title=value,
+                           decoration: InputDecoration(
+                            labelText: 'title:',
+                            labelStyle: TextStyle(fontSize: 20.0),
+                            border: OutlineInputBorder(),
+                            errorStyle:
+                                TextStyle(color: Colors.redAccent, fontSize: 15),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please Enter title';
+                          }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter title';
-                        }
-                          return null;
-                        },
                       ),
-                    ),
-     
-                    //       }
-                    //       return null;
-                    //     },
-                    //   ),
-                    // ),
-                  // Container(
-                    //   margin: EdgeInsets.symmetric(vertical: 10.0),
-                    //   child: TextFormField(
-                     //     initialValue: password,
-                     //     autofocus: false,
-                     //     onChanged: (value) => password = value,
-                     //     obscureText: true,
-                     //     decoration: InputDecoration(
-                     //       labelText: 'Password: ',
-                    //       labelStyle: TextStyle(fontSize: 20.0),
-                     //       border: OutlineInputBorder(),
-                    //       errorStyle:
-                     //           TextStyle(color: Colors.redAccent, fontSize: 15),
-                    //     ),
-                    //     validator: (value) {
-                    //       if (value == null || value.isEmpty) {
-                  //         return 'Please Enter Password';
-                    //       }
-                    //       return null;
-                    //     },
-                     //   ),
-                    // ),
-                     Container(
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Map<String, dynamic> updatedData = {
-      'title': title, // Update with other fields if needed
-    };
-                            updateTask(userId, widget.id, updatedData);
-                             },
-                             child: Text(
-                               'Update task',
-                             style: TextStyle(fontSize: 18.0),
+            
+                      //       }
+                      //       return null;
+                      //     },
+                      //   ),
+                      // ),
+                    // Container(
+                      //   margin: EdgeInsets.symmetric(vertical: 10.0),
+                      //   child: TextFormField(
+                       //     initialValue: password,
+                       //     autofocus: false,
+                       //     onChanged: (value) => password = value,
+                       //     obscureText: true,
+                       //     decoration: InputDecoration(
+                       //       labelText: 'Password: ',
+                      //       labelStyle: TextStyle(fontSize: 20.0),
+                       //       border: OutlineInputBorder(),
+                      //       errorStyle:
+                       //           TextStyle(color: Colors.redAccent, fontSize: 15),
+                      //     ),
+                      //     validator: (value) {
+                      //       if (value == null || value.isEmpty) {
+                    //         return 'Please Enter Password';
+                      //       }
+                      //       return null;
+                      //     },
+                       //   ),
+                      // ),
+                       Container(
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Map<String, dynamic> updatedData = {
+             'title': title, // Update with other fields if needed
+           };
+                              updateTask(userId, widget.id, updatedData);
+                               },
+                               child: Text(
+                                 'Update task',
+                               style: TextStyle(fontSize: 18.0),
+                              ),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {},
-                            child: Text(
-                              'Reset',
-                             style: TextStyle(fontSize: 18.0),
-                           ),
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.blueGrey),
-                          ),
-                       ],
-                      ),
-                    )
-                  ],
-              ),
-              );
+                            ElevatedButton(
+                              onPressed: () => {},
+                              child: Text(
+                                'Reset',
+                               style: TextStyle(fontSize: 18.0),
+                             ),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.blueGrey),
+                            ),
+                         ],
+                        ),
+                      )
+                    ],
+                ),
+                ),
+       );
       }
       ),
     )
